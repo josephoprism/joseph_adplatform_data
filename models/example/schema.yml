@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: adplatformdata_unpivot_JO 
+    description: "This model joins session data from `prism_acquire.sessions` with advertising platform data from `prism_acquire.adplatform_data`."
+    columns:
+      - name: date
+        description: "The date of the session and advertising data."
+        tests:
+          - not_null
+      - name: user_cookie_id
+        description: "The user identifier based on cookie data."
+        tests:
+          - not_null
+      - name: user_crm_id
+        description: "The CRM user identifier. Can be null if the user doesn't have a login."
+        tests:
+          - accepted_values:
+              values: ['null', 'numeric']
+      - name: session_id
+        description: "The unique session identifier."
+        tests:
+          - not_null
+      - name: traffic_source
+        description: "The source of the traffic (e.g., 'criteo', 'google', 'meta', etc.)."
+        tests:
+          - not_null
+      - name: traffic_medium
+        description: "The medium of the traffic (e.g., 'cpc', 'organic')."
+        tests:
+          - not_null
+      - name: cost
+        description: "The cost associated with the traffic source."
+        tests:
+          - accepted_values:
+              values: ['null', 'numeric']
+      - name: clicks
+        description: "The number of clicks associated with the traffic source."
+        tests:
+          - accepted_values:
+              values: ['null', 'numeric']
+      - name: impressions
+        description: "The number of impressions associated with the traffic source."
+        tests:
+          - accepted_values:
+              values: ['null', 'numeric']
+      - name: device_category
+        description: "The category of the user's device (e.g., mobile, desktop)."
+        tests:
+          - not_null
+      - name: city
+        description: "The city of the user based on session data."
+        tests:
+          - not_null

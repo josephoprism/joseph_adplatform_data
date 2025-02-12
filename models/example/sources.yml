@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: prism_acquire
+    tables:
+      - name: adplatform_data
+        description: "Contains advertising platform data (e.g., cost, clicks, impressions) from various platforms."
+      - name: sessions
+        description: "Contains session data, including user activity and session details."
+      - name: funnelevents
+        

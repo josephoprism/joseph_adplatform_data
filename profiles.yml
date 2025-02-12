@@ -1,0 +1,14 @@
+my_project:
+  outputs:
+    dev:
+      dataset: josepho
+      job_execution_timeout_seconds: 600
+      job_retries: 1
+      keyfile: C:\Users\joeob\key\bigquery-key.json
+      location: US
+      method: service-account
+      priority: interactive
+      project: prism-insights
+      threads: 4
+      type: bigquery
+  target: dev
