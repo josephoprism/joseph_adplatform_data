@@ -21,7 +21,7 @@ funnelevents AS (
         session_id,
         COUNT(DISTINCT transaction_id) AS total_conversions
     FROM
-        {{ ref('funnelevents') }}
+        {{ source('prism_acquire','funnelevents') }}
     GROUP BY session_id
 )
 SELECT 
