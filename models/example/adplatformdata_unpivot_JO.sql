@@ -2,47 +2,68 @@
     materialized='table'
 ) }}
 
-select 
-    date,
-    'criteo' as traffic_source,
-    criteo_cost as cost,
-    criteo_clicks as clicks,
-    criteo_impressions as impressions
-from 
-    {{ source('prism_acquire', 'adplatform_data') }}
-union all
-select 
-    date,
-    'google' as traffic_source,
-    google_cost as cost,
-    google_clicks as clicks,
-    google_impressions as impressions
-from 
-    {{ source('prism_acquire', 'adplatform_data') }}
-union all
-select 
-    date,
-    'meta' as traffic_source,
-    meta_cost as cost,
-    meta_clicks as clicks,
-    meta_impressions as impressions
-from 
-    {{ source('prism_acquire', 'adplatform_data') }}
-union all
-select 
-    date,
-    'rtbhouse' as traffic_source,
-    rtbhouse_cost as cost,
-    rtbhouse_clicks as clicks,
-    rtbhouse_impressions as impressions
-from 
-    {{ source('prism_acquire', 'adplatform_data') }}
-union all
-select 
-    date,
-    'tiktok' as traffic_source,
-    tiktok_cost as cost,
-    tiktok_clicks as clicks,
-    tiktok_impressions as impressions
-from 
-    {{ source('prism_acquire', 'adplatform_data') }}
+WITH adplatform_data AS (
+    SELECT 
+        date,
+        'criteo' AS traffic_source,
+        criteo_cost AS cost,
+        criteo_clicks AS clicks,
+        criteo_impressions AS impressions
+    FROM 
+        {{ source('prism_acquire', 'adplatform_data') }}
+    UNION ALL
+    SELECT 
+        date,
+        'google' AS traffic_source,
+        google_cost AS cost,
+        google_clicks AS clicks,
+        google_impressions AS impressions
+    FROM 
+        {{ source('prism_acquire', 'adplatform_data') }}
+    UNION ALL
+    SELECT 
+        date,
+        'meta' AS traffic_source,
+        meta_cost AS cost,
+        meta_clicks AS clicks,
+        meta_impressions AS impressions
+    FROM 
+        {{ source('prism_acquire', 'adplatform_data') }}
+    UNION ALL
+    SELECT 
+        date,
+        'rtbhouse' AS traffic_source,
+        rtbhouse_cost AS cost,
+        rtbhouse_clicks AS clicks,
+        rtbhouse_impressions AS impressions
+    FROM 
+        {{ source('prism_acquire', 'adplatform_data') }}
+    UNION ALL
+    SELECT 
+        date,
+        'tiktok' AS traffic_source,
+        tiktok_cost AS cost,
+        tiktok_clicks AS clicks,
+        tiktok_impressions AS impressions
+    FROM 
+        {{ source('prism_acquire', 'adplatform_data') }}
+)
+
+SELECT 
+    s.date,
+    s.user_cookie_id,
+    s.user_crm_id,
+    s.session_id,
+    s.traffic_source,
+    s.traffic_medium,
+    s.device_category,
+    s.city,
+    a.cost,
+    a.clicks,
+    a.impressions
+FROM 
+    {{ source('prism_acquire', 'sessions') }} AS s
+LEFT JOIN
+    adplatform_data AS a
+ON 
+    s.date = a.date AND s.traffic_source = a.traffic_source
